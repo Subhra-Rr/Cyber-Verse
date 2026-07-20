@@ -393,41 +393,10 @@ export default function ModuleView({
                 </div>
               </div>
 
-              {/* Dynamic Interactive Visual Panel / Google & Web Pathways Toggle */}
+              {/* Dynamic Interactive Visual Panel */}
               <div className="xl:col-span-2 space-y-4">
-                <div className="flex bg-slate-950 p-1 border border-slate-900 rounded-xl">
-                  <button
-                    onClick={() => setRightPanelTab('simulation')}
-                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase transition-all flex items-center justify-center gap-1.5 ${
-                      rightPanelTab === 'simulation'
-                        ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 shadow-sm'
-                        : 'text-slate-500 hover:text-slate-300'
-                    }`}
-                  >
-                    <Activity className="w-3.5 h-3.5" />
-                    Sandbox Labs
-                  </button>
-                  <button
-                    onClick={() => setRightPanelTab('global_pathways')}
-                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase transition-all flex items-center justify-center gap-1.5 ${
-                      rightPanelTab === 'global_pathways'
-                        ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20 shadow-sm'
-                        : 'text-slate-500 hover:text-slate-300'
-                    }`}
-                  >
-                    <Globe className="w-3.5 h-3.5 text-violet-400" />
-                    WWW Pathways
-                  </button>
-                </div>
-
-                {rightPanelTab === 'simulation' ? (
-                  <>
-                    <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Interactive Simulation Sandbox</span>
-                    {renderModuleSimulator()}
-                  </>
-                ) : (
-                  renderGlobalPathways()
-                )}
+                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Interactive Simulation Sandbox</span>
+                {renderModuleSimulator()}
               </div>
             </div>
           ) : (

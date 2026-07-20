@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, BookOpen, Terminal, Shield, Trophy, LucideIcon, Menu, X, Network, Key, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Terminal, Shield, Trophy, LucideIcon, Menu, X, Network, Key, ShieldAlert, Landmark } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
@@ -14,7 +14,11 @@ export default function Sidebar({ activeTab, setActiveTab, score }: SidebarProps
     { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
     { id: 'modules', label: 'Security Curriculum', icon: BookOpen },
     { id: 'labs', label: 'CTF Challenge Labs', icon: Trophy },
-    { id: 'tools', label: 'Security Tools Suite', icon: Terminal }
+    { id: 'tools', label: 'Security Tools Suite', icon: Terminal },
+    { id: 'network-builder', label: 'Network Builder', icon: Network },
+    { id: 'sandbox-firewall', label: 'Threat Sandbox', icon: ShieldAlert },
+    { id: 'cert-museum', label: 'Academy & Museum', icon: Landmark },
+    { id: 'knowledge-base', label: 'Intel Knowledge Base', icon: BookOpen }
   ];
 
   return (

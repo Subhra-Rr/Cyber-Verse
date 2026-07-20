@@ -10,6 +10,10 @@ import Dashboard from './pages/Dashboard';
 import ModuleView from './pages/ModuleView';
 import LabsView from './pages/LabsView';
 import ToolsView from './pages/ToolsView';
+import NetworkBuilder from './pages/NetworkBuilder';
+import SandboxFirewall from './pages/SandboxFirewall';
+import CertMuseum from './pages/CertMuseum';
+import IntelKnowledgeBase from './pages/IntelKnowledgeBase';
 import { modulesData } from './data/modules';
 import { labsData } from './data/labs';
 import { useProgress } from './hooks/useProgress';
@@ -117,6 +121,14 @@ export default function App() {
         );
       case 'tools':
         return <ToolsView />;
+      case 'network-builder':
+        return <NetworkBuilder />;
+      case 'sandbox-firewall':
+        return <SandboxFirewall />;
+      case 'cert-museum':
+        return <CertMuseum />;
+      case 'knowledge-base':
+        return <IntelKnowledgeBase />;
       default:
         return <Dashboard progress={progress} modules={modulesData} achievements={achievementsList} onSelectModule={handleSelectModule} onSelectLab={handleSelectLab} setActiveTab={setActiveTab} />;
     }
