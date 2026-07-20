@@ -28,6 +28,15 @@ export interface Quiz {
   questions: QuizQuestion[];
 }
 
+export interface ExternalResource {
+  title: string;
+  platform: string;
+  url: string;
+  description: string;
+  isFree: boolean;
+  type: 'course' | 'sandbox' | 'certification' | 'tool';
+}
+
 export interface Module {
   id: string;
   title: string;
@@ -40,6 +49,7 @@ export interface Module {
   quiz: Quiz;
   simulatorId?: string; // Direct link to primary simulator for this module
   tags: string[];
+  externalResources?: ExternalResource[];
 }
 
 export interface Lab {

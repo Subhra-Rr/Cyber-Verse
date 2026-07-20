@@ -753,3 +753,274 @@ The model reads data from an untrusted source (like a webpage, user comment, or 
     }
   }
 ];
+
+const resourcesMap: { [key: string]: any[] } = {
+  networking: [
+    {
+      title: 'Google IT Support: Bits and Bytes of Networking',
+      platform: 'Google / Coursera',
+      url: 'https://www.coursera.org/learn/computer-networking',
+      description: 'The premier course on physical Layer, TCP/IP, IP routing, DHCP, and DNS. Taught directly by Google engineers.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'Wireshark Packet Analysis Labs',
+      platform: 'Wireshark Foundation',
+      url: 'https://www.wireshark.org/docs/',
+      description: 'Learn how to sniff, filter, and dissect real-world TCP, HTTP, and TLS handshakes in live networks.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Cisco Networking Academy: Packet Tracer',
+      platform: 'Cisco Academy',
+      url: 'https://www.netacad.com/courses/packet-tracer',
+      description: 'Develop network topology simulations with a fully interactive virtual router, switch, and host dashboard.',
+      isFree: true,
+      type: 'sandbox'
+    }
+  ],
+  cryptography: [
+    {
+      title: 'Stanford University: Applied Cryptography I',
+      platform: 'Stanford / Coursera',
+      url: 'https://www.coursera.org/learn/crypto',
+      description: 'Rigorous introduction to public/private key encryption, Diffie-Hellman protocols, and hash collisions.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'CryptoHack: Modern Cryptography Challenges',
+      platform: 'CryptoHack',
+      url: 'https://cryptohack.org/',
+      description: 'An interactive gamified platform where you crack RSA keys, exploit AES padding oracles, and learn math hands-on.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'CyberChef: Swiss Army Knife for Security Encodings',
+      platform: 'GCHQ / GitHub',
+      url: 'https://gchq.github.io/CyberChef/',
+      description: 'Interactive web-based decoder tool. Perfect for translating Base64, Hex, MD5/SHA256, and AES ciphers dynamically.',
+      isFree: true,
+      type: 'tool'
+    }
+  ],
+  'web-security': [
+    {
+      title: 'PortSwigger Web Security Academy',
+      platform: 'PortSwigger Academy',
+      url: 'https://portswigger.net/web-security',
+      description: 'The industry-leading repository of high-fidelity labs for hands-on SQLi, XSS, CSRF, and SSRF hacking.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'OWASP Juice Shop Vulnerable App',
+      platform: 'OWASP Foundation',
+      url: 'https://owasp.org/www-project-juice-shop/',
+      description: 'A modern node.js application intentionally packed with security bugs to test your penetration testing skills.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Google Bug Hunters University',
+      platform: 'Google Security',
+      url: 'https://bughunters.google.com/',
+      description: 'Google\'s official guide for security bug reporting, demonstrating common web injection types and impact analysis.',
+      isFree: true,
+      type: 'course'
+    }
+  ],
+  linux: [
+    {
+      title: 'Linux Journey: Complete Interactive Shell Textbook',
+      platform: 'Linux Journey',
+      url: 'https://linuxjourney.com/',
+      description: 'An elegant step-by-step introduction to Linux filesystems, file management, permissions, and routing tables.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'OverTheWire: Bandit SSH CTF Challenges',
+      platform: 'OverTheWire CTF',
+      url: 'https://overthewire.org/wargames/bandit/',
+      description: 'Connect via SSH and solve visual and text puzzles on a live server to discover flags and climb levels.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Google IT Automation with Python Professional Certificate',
+      platform: 'Google / Coursera',
+      url: 'https://www.coursera.org/professional-certificates/google-it-automation',
+      description: 'Master system configuration, bash scripts, git management, and programmatic machine maintenance with Google.',
+      isFree: true,
+      type: 'certification'
+    }
+  ],
+  hacking: [
+    {
+      title: 'TryHackMe: Cyber Security Training Labs',
+      platform: 'TryHackMe',
+      url: 'https://tryhackme.com/',
+      description: 'Interactive virtual machines. Learn active red-teaming, privilege escalation, and network enumeration in your browser.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Hack The Box: Offensive Penetration Academy',
+      platform: 'Hack The Box',
+      url: 'https://www.hackthebox.com/',
+      description: 'Industrial-grade security playgrounds. Highly gamified, featuring direct virtual machines to exploit and root.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Offensive Security: Metasploit Unleashed',
+      platform: 'Offensive Security',
+      url: 'https://www.offsec.com/metasploit-unleashed/',
+      description: 'The free, official training course on setting up, configuring, and executing exploits with Metasploit framework.',
+      isFree: true,
+      type: 'course'
+    }
+  ],
+  malware: [
+    {
+      title: 'Malware Unicorn: Introductory Reverse Engineering Workshop',
+      platform: 'Malware Unicorn',
+      url: 'https://malwareunicorn.org/workshops/',
+      description: 'Master binary triage, static/dynamic malware analysis, portable executable structures, and disassemble scripts.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'REMnux: Linux Toolkit for Malware Analysis',
+      platform: 'Lenny Zeltser Labs',
+      url: 'https://zeltser.com/remnux-malware-analysis-toolkit/',
+      description: 'A pre-configured sandbox environment with reverse-engineering tools to analyze Trojan horses and exploit documents.',
+      isFree: true,
+      type: 'tool'
+    },
+    {
+      title: 'MITRE ATT&CK Matrix: Real-World Tactics & Techniques',
+      platform: 'MITRE Corporation',
+      url: 'https://attack.mitre.org/',
+      description: 'A globally-accessible knowledge base of adversary behaviors based on real-world incident observations.',
+      isFree: true,
+      type: 'course'
+    }
+  ],
+  forensics: [
+    {
+      title: 'DFIR Diva: Free Forensics Career & Training Resources',
+      platform: 'DFIR Diva',
+      url: 'https://dfirdiva.com/',
+      description: 'Curated hub of cybersecurity events, memory forensics CTFs, log analysis guides, and career launchpads.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'Autopsy Forensic Browser Training',
+      platform: 'Basis Technology / Autopsy',
+      url: 'https://www.autopsy.com/support-and-training/',
+      description: 'Learn how to inspect hard drive images, extract file metadata, analyze registry hives, and uncover deleted files.',
+      isFree: true,
+      type: 'certification'
+    },
+    {
+      title: 'SANS Digital Forensics & Incident Response Cheat Sheets',
+      platform: 'SANS Institute',
+      url: 'https://www.sans.org/blog/sans-digital-forensics-and-incident-response-cheat-sheets/',
+      description: 'Professional reference guides for investigating memory dumps, windows registries, and deep network forensics.',
+      isFree: true,
+      type: 'tool'
+    }
+  ],
+  'cloud-security': [
+    {
+      title: 'Google Cloud Cybersecurity Professional Certificate',
+      platform: 'Google / Coursera',
+      url: 'https://www.coursera.org/professional-certificates/google-cloud-cybersecurity',
+      description: 'Master identity access management (IAM), secure cloud networks (VPC), log audits, and data protection in GCP.',
+      isFree: true,
+      type: 'certification'
+    },
+    {
+      title: 'Cloud Security Alliance (CSA) Security Guidance',
+      platform: 'Cloud Security Alliance',
+      url: 'https://cloudsecurityalliance.org/research/',
+      description: 'Industry-standard framework for cloud architectures, highlighting access controls, serverless, and containers.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'AWS Security Path & KMS Fundamentals',
+      platform: 'Amazon Web Services Academy',
+      url: 'https://aws.amazon.com/training/path-security/',
+      description: 'Step-by-step path detailing AWS cloud encryption, key ring controls, CloudTrail audit logs, and IAM architectures.',
+      isFree: true,
+      type: 'course'
+    }
+  ],
+  'mobile-security': [
+    {
+      title: 'OWASP Mobile Application Security Verification (MASVS)',
+      platform: 'OWASP Foundation',
+      url: 'https://mas.owasp.org/',
+      description: 'Learn dynamic mobile security testing standards, code de-compilation, and sandbox escapes for Android and iOS.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'Android Developers: Secure Key Storage & Crypto APIs',
+      platform: 'Google / Android',
+      url: 'https://developer.android.com/topic/security/best-practices',
+      description: 'The official source for setting up Android KeyStore systems, biometric credentials, and sandboxed storage scopes.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'Apple Platform Security Architecture Review',
+      platform: 'Apple Platform Support',
+      url: 'https://support.apple.com/guide/security/welcome/web',
+      description: 'Deep dive into Secure Enclave chips, hardware AES accelerators, sandbox bounds, and iOS code signing mechanisms.',
+      isFree: true,
+      type: 'course'
+    }
+  ],
+  'ai-security': [
+    {
+      title: 'OWASP Top 10 for LLM Applications',
+      platform: 'OWASP Foundation',
+      url: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/',
+      description: 'The authoritative list covering Prompt Injection, training data poisoning, and insecure output handling.',
+      isFree: true,
+      type: 'course'
+    },
+    {
+      title: 'DeepLearning.AI: Red Teaming LLM Applications',
+      platform: 'DeepLearning.AI',
+      url: 'https://www.deeplearning.ai/short-courses/red-teaming-for-llms/',
+      description: 'Interactive short course on safe prompt structures, system prompts, jailbreaking, and input filtering methods.',
+      isFree: true,
+      type: 'sandbox'
+    },
+    {
+      title: 'Google Secure AI Framework (SAIF)',
+      platform: 'Google Safety',
+      url: 'https://safety.google/cybersecurity-advancements/saif/',
+      description: 'Read the conceptual blueprint outlining how to build, deploy, and evaluate AI systems safely.',
+      isFree: true,
+      type: 'course'
+    }
+  ]
+};
+
+// Enrich modulesData with external resources
+modulesData.forEach(module => {
+  if (resourcesMap[module.id]) {
+    module.externalResources = resourcesMap[module.id];
+  }
+});
+

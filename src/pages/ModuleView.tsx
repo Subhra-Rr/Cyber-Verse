@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Module, UserProgress, QuizQuestion } from '../types';
-import { ArrowLeft, BookOpen, Play, CheckCircle, ShieldCheck, Trophy, HelpCircle, FileText, ChevronRight, Bookmark } from 'lucide-react';
+import { Module, UserProgress, QuizQuestion, ExternalResource } from '../types';
+import { ArrowLeft, BookOpen, Play, CheckCircle, ShieldCheck, Trophy, HelpCircle, FileText, ChevronRight, Bookmark, Activity, Globe, ExternalLink } from 'lucide-react';
 import TerminalSimulator from '../components/TerminalSimulator';
 import { PasswordStrengthChecker, HashGenerator, CaesarCipherTool, PortScanner, FirewallBuilder } from '../components/Simulators';
 import { CyberThreatMap, CyberKillChain, TcpHandshakeSimulation, OsiLayerJourney } from '../components/Visualizations';
@@ -31,6 +31,33 @@ export default function ModuleView({
   const [quizScore, setQuizScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [rightPanelTab, setRightPanelTab] = useState<'simulation' | 'global_pathways'>('simulation');
+  const [redirectingResource, setRedirectingResource] = useState<any | null>(null);
+  const [redirectProgress, setRedirectProgress] = useState(0);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (redirectingResource) {
+      setRedirectProgress(0);
+      const interval = setInterval(() => {
+        setRedirectProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            window.open(redirectingResource.url, '_blank', 'noopener,noreferrer');
+            timer = setTimeout(() => {
+              setRedirectingResource(null);
+            }, 800);
+            return 100;
+          }
+          return prev + 12.5;
+        });
+      }, 250);
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timer);
+      };
+    }
+  }, [redirectingResource]);
 
   const activeLesson = module.lessons[activeLessonIdx];
   const isLessonCompleted = activeLesson ? progress.completedLessons.includes(activeLesson.id) : false;
@@ -111,6 +138,78 @@ export default function ModuleView({
       default:
         return <PasswordStrengthChecker />;
     }
+  };
+
+  const renderGlobalPathways = () => {
+    const resources = module.externalResources || [];
+
+    return (
+      <div id="global-pathways-root" className="space-y-4">
+        <div className="bg-slate-950/80 p-4 border border-slate-900 rounded-xl space-y-1.5">
+          <span className="text-[10px] font-mono font-bold text-violet-400 uppercase tracking-widest block">🌐 Global Resource Catalog</span>
+          <p className="text-slate-400 text-xs leading-relaxed">
+            There is no user account or login lock. Anyone can learn and become an expert directly from top open-web platforms, cyber classrooms, and Google programs. Click any path to launch safe interactive training.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {resources.length > 0 ? (
+            resources.map((res, i) => (
+              <div
+                key={i}
+                id={`pathway-card-${i}`}
+                className="bg-slate-900/40 border border-slate-800/85 rounded-xl p-4 space-y-3 hover:border-slate-700/60 transition-all group"
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap gap-1.5 items-center">
+                      <span className="text-[9px] font-mono font-bold bg-violet-500/10 border border-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full uppercase shrink-0">
+                        {res.platform}
+                      </span>
+                      {res.isFree && (
+                        <span className="text-[9px] font-mono font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full uppercase shrink-0">
+                          Free
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="font-bold text-slate-200 text-xs group-hover:text-cyan-400 transition-colors mt-2">
+                      {res.title}
+                    </h4>
+                  </div>
+
+                  <span className="text-[9px] font-mono font-semibold text-slate-400 capitalize bg-slate-950 border border-slate-850 px-2 py-0.5 rounded-lg shrink-0">
+                    {res.type}
+                  </span>
+                </div>
+
+                <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
+                  {res.description}
+                </p>
+
+                <div className="pt-2 border-t border-slate-850/40 flex justify-between items-center">
+                  <span className="text-[9px] font-mono text-slate-500 flex items-center gap-1">
+                    <Globe className="w-3 h-3 text-slate-600" />
+                    Open Learning Route
+                  </span>
+
+                  <button
+                    onClick={() => setRedirectingResource(res)}
+                    className="px-3 py-1.5 bg-violet-500/10 hover:bg-violet-500 text-violet-300 hover:text-slate-950 border border-violet-500/20 hover:border-transparent rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1"
+                  >
+                    Launch Platform
+                    <ExternalLink className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-6 text-slate-500 text-xs font-mono">
+              No global resources cataloged for this module yet.
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   // QUIZ ENGINE CONTROLS
@@ -294,10 +393,41 @@ export default function ModuleView({
                 </div>
               </div>
 
-              {/* Dynamic Interactive Visual Panel */}
+              {/* Dynamic Interactive Visual Panel / Google & Web Pathways Toggle */}
               <div className="xl:col-span-2 space-y-4">
-                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Interactive Simulation Sandbox</span>
-                {renderModuleSimulator()}
+                <div className="flex bg-slate-950 p-1 border border-slate-900 rounded-xl">
+                  <button
+                    onClick={() => setRightPanelTab('simulation')}
+                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase transition-all flex items-center justify-center gap-1.5 ${
+                      rightPanelTab === 'simulation'
+                        ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                  >
+                    <Activity className="w-3.5 h-3.5" />
+                    Sandbox Labs
+                  </button>
+                  <button
+                    onClick={() => setRightPanelTab('global_pathways')}
+                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold uppercase transition-all flex items-center justify-center gap-1.5 ${
+                      rightPanelTab === 'global_pathways'
+                        ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                  >
+                    <Globe className="w-3.5 h-3.5 text-violet-400" />
+                    WWW Pathways
+                  </button>
+                </div>
+
+                {rightPanelTab === 'simulation' ? (
+                  <>
+                    <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Interactive Simulation Sandbox</span>
+                    {renderModuleSimulator()}
+                  </>
+                ) : (
+                  renderGlobalPathways()
+                )}
               </div>
             </div>
           ) : (
@@ -429,6 +559,88 @@ export default function ModuleView({
           )}
         </div>
       </div>
+
+      {/* Immersive SECURE NETWORK REDIRECT SIMULATION OVERLAY */}
+      {redirectingResource && (
+        <div id="redirect-overlay" className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-6 shadow-2xl relative overflow-hidden">
+            {/* Ambient secure background scanning lines */}
+            <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent pointer-events-none" />
+
+            <div className="text-center space-y-2">
+              <div className="relative w-16 h-16 mx-auto flex items-center justify-center bg-violet-500/10 border border-violet-500/20 rounded-full text-violet-400">
+                <Globe className="w-8 h-8 animate-pulse text-cyan-400" />
+                <div className="absolute inset-0 rounded-full border border-cyan-500/30 animate-ping" style={{ animationDuration: '3s' }} />
+              </div>
+              <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider font-mono">
+                Establishing Secure Link
+              </h3>
+              <p className="text-[10px] text-slate-500 font-mono">
+                No local tracking | Open Education Connection
+              </p>
+            </div>
+
+            {/* Network handshake terminal simulation */}
+            <div className="bg-slate-950 border border-slate-850 rounded-xl p-4 space-y-2 font-mono text-[10px]">
+              <div className="flex justify-between text-slate-500 border-b border-slate-850 pb-1.5 mb-2">
+                <span>CONNECTION STATUS</span>
+                <span className="text-cyan-400 font-bold animate-pulse">ACTIVE</span>
+              </div>
+
+              <div className="space-y-1 text-slate-300 text-left">
+                <div className={`transition-opacity duration-300 ${redirectProgress >= 0 ? 'opacity-100' : 'opacity-20'}`}>
+                  <span className="text-emerald-400">✔</span> [DNS] Resolved <span className="text-cyan-300">{new URL(redirectingResource.url).hostname}</span>
+                </div>
+                <div className={`transition-opacity duration-300 ${redirectProgress >= 25 ? 'opacity-100' : 'opacity-20'}`}>
+                  <span className={redirectProgress >= 25 ? 'text-emerald-400' : 'text-slate-600'}>{redirectProgress >= 25 ? '✔' : '◷'}</span> [TCP] Port 443 Handshake SYN/ACK established
+                </div>
+                <div className={`transition-opacity duration-300 ${redirectProgress >= 50 ? 'opacity-100' : 'opacity-20'}`}>
+                  <span className={redirectProgress >= 50 ? 'text-emerald-400' : 'text-slate-600'}>{redirectProgress >= 50 ? '✔' : '◷'}</span> [TLS] TLS_AES_256_GCM_SHA384 active
+                </div>
+                <div className={`transition-opacity duration-300 ${redirectProgress >= 75 ? 'opacity-100' : 'opacity-20'}`}>
+                  <span className={redirectProgress >= 75 ? 'text-emerald-400' : 'text-slate-600'}>{redirectProgress >= 75 ? '✔' : '◷'}</span> [ROUTER] Safe sandbox routing tunnel initiated
+                </div>
+                <div className={`transition-opacity duration-300 ${redirectProgress >= 100 ? 'opacity-100' : 'opacity-20'}`}>
+                  <span className={redirectProgress >= 100 ? 'text-emerald-400' : 'text-slate-600'}>{redirectProgress >= 100 ? '✔' : '◷'}</span> [COMPLETED] Forwarding to {redirectingResource.platform}...
+                </div>
+              </div>
+            </div>
+
+            {/* Custom Progress Bar */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-[9px] font-mono text-slate-500">
+                <span>PACKETS TRANSFERRED</span>
+                <span>{Math.round(redirectProgress)}%</span>
+              </div>
+              <div className="w-full bg-slate-950 h-2 border border-slate-850 rounded-full overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-cyan-500 to-violet-500 h-full transition-all duration-300"
+                  style={{ width: `${redirectProgress}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 flex justify-between gap-3">
+              <button
+                onClick={() => setRedirectingResource(null)}
+                className="flex-1 py-2 bg-slate-950 border border-slate-850 text-slate-400 hover:text-white rounded-xl text-[10px] font-mono transition-colors"
+              >
+                Cancel Sandbox Request
+              </button>
+              <a
+                href={redirectingResource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setRedirectingResource(null)}
+                className="flex-1 py-2 bg-gradient-to-r from-cyan-500 to-violet-500 text-slate-950 hover:brightness-110 font-bold text-center rounded-xl text-[10px] font-mono transition-all flex items-center justify-center gap-1"
+              >
+                Launch Instantly
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
