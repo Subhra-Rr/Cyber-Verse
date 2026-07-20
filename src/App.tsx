@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
@@ -14,6 +14,15 @@ import NetworkBuilder from './pages/NetworkBuilder';
 import SandboxFirewall from './pages/SandboxFirewall';
 import CertMuseum from './pages/CertMuseum';
 import IntelKnowledgeBase from './pages/IntelKnowledgeBase';
+
+// Core New Educational Pages
+import CyberCity from './pages/CyberCity';
+import KnowledgeGraph from './pages/KnowledgeGraph';
+import SecurityArchitecture from './pages/SecurityArchitecture';
+import Notebook from './pages/Notebook';
+import ResourceCenter from './pages/ResourceCenter';
+import SystemDocsSettings from './pages/SystemDocsSettings';
+
 import { modulesData } from './data/modules';
 import { labsData } from './data/labs';
 import { useProgress } from './hooks/useProgress';
@@ -22,6 +31,29 @@ export default function App() {
   const [screen, setScreen] = useState<'landing' | 'app'>('landing');
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+
+  // Persistent User Operational states
+  const [theme, setTheme] = useState<string>(() => localStorage.getItem('cyberverse_theme') || 'glass');
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(() => {
+    const saved = localStorage.getItem('cyberverse_sound');
+    return saved !== null ? saved === 'true' : true;
+  });
+  const [reducedMotion, setReducedMotion] = useState<boolean>(() => {
+    const saved = localStorage.getItem('cyberverse_motion');
+    return saved !== null ? saved === 'true' : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cyberverse_theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem('cyberverse_sound', String(soundEnabled));
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('cyberverse_motion', String(reducedMotion));
+  }, [reducedMotion]);
 
   const {
     progress,
@@ -125,10 +157,31 @@ export default function App() {
         return <NetworkBuilder />;
       case 'sandbox-firewall':
         return <SandboxFirewall />;
+      case 'cyber-city':
+        return <CyberCity />;
+      case 'knowledge-graph':
+        return <KnowledgeGraph />;
+      case 'architecture':
+        return <SecurityArchitecture />;
+      case 'notebook':
+        return <Notebook />;
+      case 'resource-center':
+        return <ResourceCenter />;
       case 'cert-museum':
         return <CertMuseum />;
       case 'knowledge-base':
         return <IntelKnowledgeBase />;
+      case 'settings-docs':
+        return (
+          <SystemDocsSettings
+            theme={theme}
+            setTheme={setTheme}
+            soundEnabled={soundEnabled}
+            setSoundEnabled={setSoundEnabled}
+            reducedMotion={reducedMotion}
+            setReducedMotion={setReducedMotion}
+          />
+        );
       default:
         return <Dashboard progress={progress} modules={modulesData} achievements={achievementsList} onSelectModule={handleSelectModule} onSelectLab={handleSelectLab} setActiveTab={setActiveTab} />;
     }
@@ -139,7 +192,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex relative overflow-hidden">
+    <div className={`min-h-screen bg-slate-950 text-slate-100 font-sans flex relative overflow-hidden transition-all duration-300 ${
+      theme === 'matrix' ? 'theme-matrix crt-overlay' : theme === 'retro' ? 'theme-retro crt-overlay' : ''
+    }`}>
       {/* Background grids */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(8,47,73,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(8,47,73,0.1)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 

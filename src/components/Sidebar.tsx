@@ -1,5 +1,8 @@
 import React from 'react';
-import { LayoutDashboard, BookOpen, Terminal, Shield, Trophy, LucideIcon, Menu, X, Network, Key, ShieldAlert, Landmark } from 'lucide-react';
+import { 
+  LayoutDashboard, BookOpen, Terminal, Shield, Trophy, LucideIcon, Menu, X, 
+  Network, Key, ShieldAlert, Landmark, Building2, Layers, Notebook, FileText, Settings 
+} from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
@@ -14,11 +17,17 @@ export default function Sidebar({ activeTab, setActiveTab, score }: SidebarProps
     { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
     { id: 'modules', label: 'Security Curriculum', icon: BookOpen },
     { id: 'labs', label: 'CTF Challenge Labs', icon: Trophy },
+    { id: 'cyber-city', label: 'Digital Twin City', icon: Building2 },
+    { id: 'knowledge-graph', label: 'Knowledge Graph', icon: Network },
+    { id: 'architecture', label: 'Security Architecture', icon: Layers },
     { id: 'tools', label: 'Security Tools Suite', icon: Terminal },
     { id: 'network-builder', label: 'Network Builder', icon: Network },
     { id: 'sandbox-firewall', label: 'Threat Sandbox', icon: ShieldAlert },
+    { id: 'notebook', label: 'Personal Notebook', icon: Notebook },
+    { id: 'resource-center', label: 'Resource Center', icon: FileText },
     { id: 'cert-museum', label: 'Academy & Museum', icon: Landmark },
-    { id: 'knowledge-base', label: 'Intel Knowledge Base', icon: BookOpen }
+    { id: 'knowledge-base', label: 'Intel Knowledge Base', icon: BookOpen },
+    { id: 'settings-docs', label: 'Settings & System Docs', icon: Settings }
   ];
 
   return (
@@ -72,7 +81,7 @@ export default function Sidebar({ activeTab, setActiveTab, score }: SidebarProps
         </div>
 
         {/* Navigation Middle list */}
-        <nav className="flex-1 px-4 space-y-1 py-4">
+        <nav className="flex-1 px-4 space-y-1 py-4 overflow-y-auto scrollbar-thin max-h-[calc(100vh-240px)]">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
